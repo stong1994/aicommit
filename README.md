@@ -14,6 +14,8 @@ A cli tool to generate commit content.
 ## Build
 
 ```bash
+git clone https://github.com/stong1994/aicommit.git
+cd aicommit
 go build -o aicommit main.go
 ```
 
@@ -21,7 +23,8 @@ go build -o aicommit main.go
 
 ```bash
 export AICOMMIT_MODEL=codegemma
-export PATH=$PATH:{$pwd}/aicommit
+export PATH=$PATH:$PWD # or move aicommit to the /usr/local/bin
+# cd to the git repository
 aicommit
 ```
 
