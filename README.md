@@ -25,4 +25,7 @@ export PATH=$PATH:${pwd}/aicommit
 aicommit
 ```
 
-default model is `codegemma` if not provided.
+There are two ways to change the LLM model:
+
+1.  Using environment variable `AICOMMIT_MODEL` to specify the model to use.
+2.  Using `--model` flag to specify the model to use.
