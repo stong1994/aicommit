@@ -11,10 +11,18 @@ A cli tool to generate commit content.
 - [codeqwen](https://ollama.com/library/codeqwen)
 - [codellama](https://ollama.com/library/codellama)
 
+## Build
+
+```bash
+go build -o aicommit main.go
+```
+
 ## Run
 
 ```bash
-go run main.go --model codegemma
+export AICOMMIT_MODEL=codegemma
+export PATH=$PATH:${pwd}/aicommit
+aicommit
 ```
 
 default model is `codegemma` if not provided.

@@ -39,7 +39,11 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVar(&model, "model", "codegemma", "AI model to use for summarizing git commit differences")
+	model = os.Getenv("AICOMMIT_MODEL")
+	if model == "" {
+		model = "codegemma"
+	}
+	rootCmd.PersistentFlags().StringVar(&model, "model", model, "AI model to use for summarizing git commit differences")
 }
 
 func main() {
