@@ -33,3 +33,7 @@ There are two ways to change the LLM model:
 
 1.  Using environment variable `AICOMMIT_MODEL` to specify the model to use.
 2.  Using `--model` flag to specify the model to use.
+
+## Notice
+
+The tool uses `git diff HEAD` to get the diff content, so make sure the output of `git diff HEAD` is not empty.
