@@ -16,6 +16,7 @@ A cli tool to generate commit content.
 ```bash
 git clone https://github.com/stong1994/aicommit.git
 cd aicommit
+go mod tidy
 go build -o aicommit main.go
 ```
 
