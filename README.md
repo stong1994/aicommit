@@ -21,7 +21,7 @@ go build -o aicommit main.go
 
 ```bash
 export AICOMMIT_MODEL=codegemma
-export PATH=$PATH:${pwd}/aicommit
+export PATH=$PATH:{$pwd}/aicommit
 aicommit
 ```
 
