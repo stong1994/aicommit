@@ -1,6 +1,6 @@
 # aicommit
 
-A cli tool to commit and push changes to a git repository.
+A cli tool to generate commit content.
 
 ## Prepare
 
@@ -14,7 +14,7 @@ A cli tool to commit and push changes to a git repository.
 ## Run
 
 ```bash
-go run main.go --model=codegemma
+go run main.go --model codegemma
 ```
 
 default model is `codegemma` if not provided.
