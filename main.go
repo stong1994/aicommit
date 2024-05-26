@@ -76,7 +76,7 @@ func summarizeWithOllama(ctx context.Context, diff string) (string, error) {
 				Please adhere to the following guidelines:
 				1. The commit should include a title and details. 
 				2. The title should be less than 50 characters and the details should be wrapped at 72 characters. 
-				3. The format of command should be "git commit -m {title} -m {detail1} -m {detail2}", the count of details depends on the diff content.
+				3. The format of command should be "git commit -m '{title}' -m '{detail1}' -m '{detail2}'", the count of details depends on the diff content.
 				4. Choose a type as the prefix of title, following the rules below:
 			     - docs: Documentation only changes,
 			     - style:Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc),
