@@ -53,8 +53,10 @@ func main() {
 	}
 }
 
+var diffCached = []string{"diff", "--cached", "--diff-algorithm=minimal"}
+
 func getDiffWithLastCommit() (string, error) {
-	cmd := exec.Command("git", "diff", "HEAD")
+	cmd := exec.Command("git", diffCached...)
 	output, err := cmd.Output()
 	if err != nil {
 		return "", err
