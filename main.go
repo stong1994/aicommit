@@ -64,7 +64,7 @@ var rootCmd = &cobra.Command{
 		case "lingyi":
 			llm = sllms.NewLingyi(model)
 		default:
-			log.Fatal("invalid platform, only suppport ollama and lingyi but found: ", p)
+			log.Fatal("invalid platform, only suppport ollama and lingyi but found: ", platform)
 		}
 		_, err = llm.GenerateContent(context.Background(), prompt, diff)
 		if err != nil {
