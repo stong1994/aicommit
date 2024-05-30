@@ -37,7 +37,14 @@ const prompt = `You are an AI programming assistant.
 				9. Your entire response will be passed directly into shell to execute, so make sure it's executable.
 			`
 
-var model string
+var (
+	model string
+	p     string // platform of llm, either ollam or lingyi
+)
+
+type LLM interface {
+	GenerateContent(ctx context.Context, prompt, diff string) (string, error)
+}
 
 var rootCmd = &cobra.Command{
 	Use:   "aicommit",
@@ -50,8 +57,15 @@ var rootCmd = &cobra.Command{
 		}
 		// log.Println("got diff: ", diff)
 
-		// 使用Ollama服务和Llama 3模型进行总结
-		llm := sllms.NewOllama(model)
+		var llm LLM
+		switch p {
+		case "ollama":
+			llm = sllms.NewOllama(model)
+		case "lingyi":
+			llm = sllms.NewLingyi(model)
+		default:
+			log.Fatal("invalid platform, only suppport ollama and lingyi but found: ", p)
+		}
 		_, err = llm.GenerateContent(context.Background(), prompt, diff)
 		if err != nil {
 			log.Fatal("error generating content: ", err)
@@ -68,6 +82,7 @@ func init() {
 		model = "codegemma"
 	}
 	rootCmd.PersistentFlags().StringVar(&model, "model", model, "AI model to use for summarizing git commit differences")
+	rootCmd.PersistentFlags().StringVar(&p, "p", "ollama", "platform to run llm")
 }
 
 func main() {
