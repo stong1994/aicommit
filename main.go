@@ -91,7 +91,7 @@ func summarizeWithOllama(ctx context.Context, diff string) (string, error) {
 			     - feat: A new feature,
 			     - fix: A bug fix, 
 			     - refactor: A code change that neither fixes a bug nor adds a feature,
-				5. The format of command should be "git commit -m '{type}: {title}' -m '{detail1}' -m '{detail2}'", the count of -m tag depends on the details count.
+				5. The format of command should be "git commit -m '{type}: {title}' -m '- {detail1}' -m '- {detail2}'", the count of -m tag depends on the details count.
 				6. The details can be ignore if the commit content is simple and not important.
 				7. Make sure the tile and details are concise.
 				8. Your should also notice the context of the commit contnet to make more precision description.
