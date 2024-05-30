@@ -14,6 +14,9 @@ type Lingyi struct {
 }
 
 func NewLingyi(model string) *Lingyi {
+	if model == "" {
+		model = "yi-large"
+	}
 	llm, err := lingyi.New(
 		lingyi.WithAPIKey(os.Getenv("LINGYI_APIKEY")),
 		lingyi.WithModel(model),

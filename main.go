@@ -38,8 +38,8 @@ const prompt = `You are an AI programming assistant.
 			`
 
 var (
-	model string
-	p     string // platform of llm, either ollam or lingyi
+	model    string
+	platform string // platform of llm, either ollam or lingyi
 )
 
 type LLM interface {
@@ -58,7 +58,7 @@ var rootCmd = &cobra.Command{
 		// log.Println("got diff: ", diff)
 
 		var llm LLM
-		switch p {
+		switch platform {
 		case "ollama":
 			llm = sllms.NewOllama(model)
 		case "lingyi":
@@ -78,11 +78,9 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	model = os.Getenv("AICOMMIT_MODEL")
-	if model == "" {
-		model = "codegemma"
-	}
 	rootCmd.PersistentFlags().StringVar(&model, "model", model, "AI model to use for summarizing git commit differences")
-	rootCmd.PersistentFlags().StringVar(&p, "p", "ollama", "platform to run llm")
+	platform = os.Getenv("AICOMMIT_PLATFORM")
+	rootCmd.PersistentFlags().StringVar(&platform, "platform", platform, "platform to run llm")
 }
 
 func main() {

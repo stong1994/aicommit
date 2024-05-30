@@ -14,6 +14,10 @@ type Ollama struct {
 }
 
 func NewOllama(model string) *Ollama {
+	if model == "" {
+		model = "codegemma"
+	}
+
 	llm, err := ollama.New(ollama.WithModel(model))
 	if err != nil {
 		log.Fatal("error creating ollama model: ", err)
