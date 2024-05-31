@@ -55,6 +55,17 @@ var rootCmd = &cobra.Command{
 	Use:   "aicommit",
 	Short: "A tool to summarize git commit differences using Ollama",
 	Long:  `This tool retrieves the differences between the current working directory and the last git commit, and summarizes it using the Ollama service with the Llama 3 model.`,
+	// PreRun: func(cmd *cobra.Command, args []string) {
+	// 	var err error
+	// 	if cmd.Flags().Changed("quiet") {
+	// 		log.Println("got changed")
+	// 		quiet, err = cmd.Flags().GetBool("quiet")
+	// 		if err != nil {
+	// 			log.Fatal(err)
+	// 		}
+	// 		log.Println("got quiet: ", quiet)
+	// 	}
+	// },
 	Run: func(cmd *cobra.Command, args []string) {
 		diff, err := getDiffWithLastCommit()
 		if err != nil {
@@ -95,11 +106,11 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	model = os.Getenv("AICOMMIT_MODEL")
-	rootCmd.PersistentFlags().StringVar(&model, "model", model, "AI model to use for summarizing git commit differences")
+	rootCmd.Flags().StringVar(&model, "model", model, "AI model to use for summarizing git commit differences")
 	platform = os.Getenv("AICOMMIT_PLATFORM")
-	rootCmd.PersistentFlags().StringVar(&platform, "platform", platform, "platform to run llm")
+	rootCmd.Flags().StringVar(&platform, "platform", platform, "platform to run llm")
 	quiet = os.Getenv("AICOMMIT_QUIET") == "true"
-	rootCmd.PersistentFlags().BoolVar(&quiet, "quiet", quiet, "if false, use stream to repsponse")
+	rootCmd.Flags().BoolVar(&quiet, "quiet", quiet, "if set, use text to repsponse, otherwise, use streaming to response")
 }
 
 func main() {
