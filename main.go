@@ -40,10 +40,15 @@ const prompt = `You are an AI programming assistant.
 var (
 	model    string
 	platform string // platform of llm, either ollam or lingyi
+	quiet    bool
 )
 
 type LLM interface {
-	GenerateContent(ctx context.Context, prompt, diff string) (string, error)
+	GenerateContent(
+		ctx context.Context,
+		prompt, diff string,
+		streamingFn func(ctx context.Context, chunk []byte) error,
+	) (string, error)
 }
 
 var rootCmd = &cobra.Command{
@@ -56,6 +61,16 @@ var rootCmd = &cobra.Command{
 			log.Fatal(err)
 		}
 		// log.Println("got diff: ", diff)
+		var streamingFn func(ctx context.Context, chunk []byte) error
+		if !quiet {
+			streamingFn = func(ctx context.Context, chunk []byte) error {
+				_, err := os.Stdout.Write(chunk)
+				if err != nil {
+					return err
+				}
+				return nil
+			}
+		}
 
 		var llm LLM
 		switch platform {
@@ -66,13 +81,15 @@ var rootCmd = &cobra.Command{
 		default:
 			log.Fatal("invalid platform, only suppport ollama and lingyi but found: ", platform)
 		}
-		_, err = llm.GenerateContent(context.Background(), prompt, diff)
+		command, err := llm.GenerateContent(context.Background(), prompt, diff, streamingFn)
 		if err != nil {
 			log.Fatal("error generating content: ", err)
 		}
 
 		// 输出总结结果
-		// fmt.Println(summary)
+		if quiet {
+			fmt.Println(command)
+		}
 	},
 }
 
@@ -81,6 +98,8 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&model, "model", model, "AI model to use for summarizing git commit differences")
 	platform = os.Getenv("AICOMMIT_PLATFORM")
 	rootCmd.PersistentFlags().StringVar(&platform, "platform", platform, "platform to run llm")
+	quiet = os.Getenv("AICOMMIT_QUIET") == "true"
+	rootCmd.PersistentFlags().BoolVar(&quiet, "quiet", quiet, "if false, use stream to repsponse")
 }
 
 func main() {

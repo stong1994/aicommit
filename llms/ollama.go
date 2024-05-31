@@ -3,7 +3,6 @@ package llms
 import (
 	"context"
 	"log"
-	"os"
 
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/ollama"
@@ -27,24 +26,24 @@ func NewOllama(model string) *Ollama {
 	}
 }
 
-func (o *Ollama) GenerateContent(ctx context.Context, prompt, diff string) (string, error) {
-	response, err := o.llm.GenerateContent(ctx, []llms.MessageContent{
-		{
-			Role:  llms.ChatMessageTypeSystem,
-			Parts: []llms.ContentPart{llms.TextPart(prompt)},
+func (o *Ollama) GenerateContent(
+	ctx context.Context,
+	prompt, diff string,
+	streamingFn func(ctx context.Context, chunk []byte) error,
+) (string, error) {
+	response, err := o.llm.GenerateContent(
+		ctx,
+		[]llms.MessageContent{
+			{
+				Role:  llms.ChatMessageTypeSystem,
+				Parts: []llms.ContentPart{llms.TextPart(prompt)},
+			},
+			{
+				Role:  llms.ChatMessageTypeHuman,
+				Parts: []llms.ContentPart{llms.TextPart(diff)},
+			},
 		},
-		{
-			Role:  llms.ChatMessageTypeHuman,
-			Parts: []llms.ContentPart{llms.TextPart(diff)},
-		},
-	}, llms.WithStreamingFunc(
-		func(ctx context.Context, chunk []byte) error {
-			_, err := os.Stdout.Write(chunk)
-			if err != nil {
-				return err
-			}
-			return nil
-		}),
+		llms.WithStreamingFunc(streamingFn),
 	)
 	if err != nil {
 		return "", err

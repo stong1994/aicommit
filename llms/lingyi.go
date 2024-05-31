@@ -29,24 +29,24 @@ func NewLingyi(model string) *Lingyi {
 	}
 }
 
-func (l *Lingyi) GenerateContent(ctx context.Context, prompt, diff string) (string, error) {
-	response, err := l.llm.GenerateContent(ctx, []llms.MessageContent{
-		{
-			Role:  llms.ChatMessageTypeSystem,
-			Parts: []llms.ContentPart{llms.TextPart(prompt)},
+func (l *Lingyi) GenerateContent(
+	ctx context.Context,
+	prompt, diff string,
+	streamingFn func(ctx context.Context, chunk []byte) error,
+) (string, error) {
+	response, err := l.llm.GenerateContent(
+		ctx,
+		[]llms.MessageContent{
+			{
+				Role:  llms.ChatMessageTypeSystem,
+				Parts: []llms.ContentPart{llms.TextPart(prompt)},
+			},
+			{
+				Role:  llms.ChatMessageTypeHuman,
+				Parts: []llms.ContentPart{llms.TextPart(diff)},
+			},
 		},
-		{
-			Role:  llms.ChatMessageTypeHuman,
-			Parts: []llms.ContentPart{llms.TextPart(diff)},
-		},
-	}, llms.WithStreamingFunc(
-		func(ctx context.Context, chunk []byte) error {
-			_, err := os.Stdout.Write(chunk)
-			if err != nil {
-				return err
-			}
-			return nil
-		}),
+		llms.WithStreamingFunc(streamingFn),
 	)
 	if err != nil {
 		return "", err

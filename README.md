@@ -32,26 +32,36 @@ go mod tidy
 go build -o aicommit main.go
 ```
 
-## Run
+## set it to global
 
 ```bash
-export AICOMMIT_MODEL=codegemma # or yi-large for 零一万物
-export AICOMMIT_PLATFORM=ollama # or lingyi for 零一万物
 export PATH=$PATH:$PWD # or move aicommit to the /usr/local/bin
-# cd to the git repository
-aicommit
 ```
 
-There have two ways to change the LLM model:
+## Run
 
-1.  Using environment variable `AICOMMIT_MODEL` to specify the model to use.
-2.  Using `--model` flag to specify the model to use.
+There are some arguments you can use:
 
-There also have two ways to change the LLM platform:
+- platform: the platform of llm, you can use ollama or lingyi
+- model: the llma model you want to use, for example: codegemma, codeqwen, codellama (for ollma), yi-large (for lingyi)
+- quiet: if true, aicommit will output the command directly, if false, the output will using be streaming
 
-1.  Using environment variable `AICOMMIT_PLATFORM` to specify the model to use.
-2.  Using `--platform` flag to specify the model to use.
+All the arguments can be set with environment:
+
+```bash
+export AICOMMIT_MODEL=codegemma
+export AICOMMIT_PLATFORM=ollama
+export AICOMMIT_QUIET=true
+```
+
+# cd to the git repository
+
+aicommit
 
 ## Notice
 
 The tool uses `git diff --cached --diff-algorithm=minimal` to get the diff content, so make sure the output of `git diff --cached --diff-algorithm=minimal` is not empty.
+
+```
+
+```
