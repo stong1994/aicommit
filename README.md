@@ -47,13 +47,14 @@ There are some arguments you can use:
 - `platform`: the platform of llm, you can use ollama or lingyi
 - `model`: the llma model you want to use, for example: codegemma, codeqwen, codellama (for ollma), yi-large (for lingyi)
 - `quiet`: if true, aicommit will output the command directly, if false, the output will using be streaming
-
-All the arguments can be set with environment:
+- `copy`: if true, aicommit will copy the command to clipboard.
+  All the arguments can be set with environment:
 
 ```bash
 export AICOMMIT_MODEL=codegemma
 export AICOMMIT_PLATFORM=ollama
 export AICOMMIT_QUIET=true
+export AICOMMIT_COPY=true
 ```
 
 To run the tool, cd to the git repository and execute `aicommit`.

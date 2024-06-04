@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/atotto/clipboard"
 	"github.com/spf13/cobra"
 	sllms "github.com/stong1994/aicommit/llms"
 )
@@ -41,6 +42,7 @@ var (
 	model    string
 	platform string // platform of llm, either ollam or lingyi
 	quiet    bool
+	needCopy bool
 )
 
 type LLM interface {
@@ -55,17 +57,6 @@ var rootCmd = &cobra.Command{
 	Use:   "aicommit",
 	Short: "A tool to summarize git commit differences using Ollama",
 	Long:  `This tool retrieves the differences between the current working directory and the last git commit, and summarizes it using the Ollama service with the Llama 3 model.`,
-	// PreRun: func(cmd *cobra.Command, args []string) {
-	// 	var err error
-	// 	if cmd.Flags().Changed("quiet") {
-	// 		log.Println("got changed")
-	// 		quiet, err = cmd.Flags().GetBool("quiet")
-	// 		if err != nil {
-	// 			log.Fatal(err)
-	// 		}
-	// 		log.Println("got quiet: ", quiet)
-	// 	}
-	// },
 	Run: func(cmd *cobra.Command, args []string) {
 		diff, err := getDiffWithLastCommit()
 		if err != nil {
@@ -101,6 +92,11 @@ var rootCmd = &cobra.Command{
 		if quiet {
 			fmt.Println(command)
 		}
+		if needCopy {
+			if err = clipboard.WriteAll(command); err != nil {
+				log.Fatal("error copy to clipboard: ", err)
+			}
+		}
 	},
 }
 
@@ -111,6 +107,8 @@ func init() {
 	rootCmd.Flags().StringVar(&platform, "platform", platform, "platform to run llm")
 	quiet = os.Getenv("AICOMMIT_QUIET") == "true"
 	rootCmd.Flags().BoolVar(&quiet, "quiet", quiet, "if set, use text to repsponse, otherwise, use streaming to response")
+	needCopy = os.Getenv("AICOMMIT_COPY") == "true"
+	rootCmd.Flags().BoolVar(&needCopy, "copy", needCopy, "if set, the command will copy to clipboard automiticly")
 }
 
 func main() {
