@@ -28,7 +28,7 @@ Obtain the API Key of 零一万物 from [here](https://platform.lingyiwanwu.com/
 
 ### Github Copilot
 
-Ensure you are logged into Github Copilot. There should be a `host.json` in your config directory (e.g., `~/.config/github-copilot` on macOS), or you can specify the token with the `GITHUB_COPILOT_TOKEN` environment variable.
+Ensure you are logged into Github Copilot. There should be a `host.json` in your config directory (e.g., `~/.config/github-copilot` on macOS), or you can specify the oauth token with the `GITHUB_OAUTH_TOKEN` environment variable.
 
 ## Installation
 

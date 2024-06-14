@@ -18,7 +18,7 @@ func NewGithub(model string) *Github {
 	}
 	llm, err := copilot.NewCopilot(
 		copilot.WithModel(model),
-		copilot.WithGithubToken(os.Getenv("GITHUB_COPILOT_TOKEN")),
+		copilot.WithGithubToken(os.Getenv("GITHUB_OAUTH_TOKEN")),
 	)
 	if err != nil {
 		log.Fatal("error creating github copilot: ", err)
