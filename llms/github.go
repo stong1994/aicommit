@@ -3,6 +3,7 @@ package llms
 import (
 	"context"
 	"log"
+	"os"
 
 	copilot "github.com/stong1994/github-copilot-api"
 )
@@ -15,7 +16,10 @@ func NewGithub(model string) *Github {
 	if model == "" {
 		model = "gpt-4"
 	}
-	llm, err := copilot.NewCopilot(copilot.WithModel(model))
+	llm, err := copilot.NewCopilot(
+		copilot.WithModel(model),
+		copilot.WithGithubToken(os.Getenv("GITHUB_COPILOT_TOKEN")),
+	)
 	if err != nil {
 		log.Fatal("error creating github copilot: ", err)
 	}

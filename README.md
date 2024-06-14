@@ -1,17 +1,18 @@
-# aicommit
+# AICommit
 
-A CLI tool to generate commit content.
+AICommit is a CLI tool that generates commit content using various AI models.
 
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Environment Variables](#environment-variables)
 - [Notice](#notice)
 
 ## Prerequisites
 
-The tool needs LLM support. You can use either Ollama or 零一万物.
+AICommit requires support from Language Learning Models (LLM). You can use either Ollama, 零一万物, or Github Copilot.
 
 ### Ollama
 
@@ -25,6 +26,10 @@ The tool needs LLM support. You can use either Ollama or 零一万物.
 
 Obtain the API Key of 零一万物 from [here](https://platform.lingyiwanwu.com/apikeys).
 
+### Github Copilot
+
+Ensure you are logged into Github Copilot. There should be a `host.json` in your config directory (e.g., `~/.config/github-copilot` on macOS), or you can specify the token with the `GITHUB_COPILOT_TOKEN` environment variable.
+
 ## Installation
 
 ```bash
@@ -34,7 +39,7 @@ go mod tidy
 go build -o aicommit main.go
 ```
 
-To make the tool globally accessible:
+To make the tool globally accessible, add it to your PATH:
 
 ```bash
 export PATH=$PATH:$PWD # or move aicommit to the /usr/local/bin
@@ -42,13 +47,18 @@ export PATH=$PATH:$PWD # or move aicommit to the /usr/local/bin
 
 ## Usage
 
-There are some arguments you can use:
+Run the tool in the git repository with the `aicommit` command.
 
-- `platform`: the platform of llm, you can use ollama or lingyi
-- `model`: the llma model you want to use, for example: codegemma, codeqwen, codellama (for ollma), yi-large (for lingyi)
-- `quiet`: if true, aicommit will output the command directly, if false, the output will using be streaming
-- `copy`: if true, aicommit will copy the command to clipboard.
-  All the arguments can be set with environment:
+The tool accepts the following arguments:
+
+- `platform`: The LLM platform to use. Options are 'ollama', 'lingyi', or 'github'.
+- `model`: The LLM model to use. For example: 'codegemma', 'codeqwen', 'codellama' (for Ollama), 'yi-large' (for Lingyi), 'gpt-4' (for github copilot).
+- `quiet`: If set to true, AICommit will output the command directly. If false, the output will be streamed.
+- `copy`: If set to true, AICommit will copy the command to the clipboard.
+
+## Environment Variables
+
+All the arguments can also be set with environment variables:
 
 ```bash
 export AICOMMIT_MODEL=codegemma
@@ -57,8 +67,6 @@ export AICOMMIT_QUIET=true
 export AICOMMIT_COPY=true
 ```
 
-To run the tool, cd to the git repository and execute `aicommit`.
-
 ## Notice
 
-The tool uses `git diff --cached --diff-algorithm=minimal` to get the diff content, so make sure the output of `git diff --cached --diff-algorithm=minimal` is not empty.
+AICommit uses `git diff --cached --diff-algorithm=minimal` to get the diff content. Ensure the output of `git diff --cached --diff-algorithm=minimal` is not empty.
