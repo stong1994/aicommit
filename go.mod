@@ -14,6 +14,7 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/pkoukk/tiktoken-go v0.1.6 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/stong1994/github-copilot-api v0.0.0-20240613175500-564fcac29717
 )
 
 // github.com/stong1994/langchaingo v0.0.0-20240530110154-9446ef856b7a => /Users/stong/ghq/github.com/stong1994/langchaingo

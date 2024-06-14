@@ -32,7 +32,7 @@ const prompt = `You are an AI programming assistant.
 			     - fix: A bug fix, 
 			     - refactor: A code change that neither fixes a bug nor adds a feature,
 				5. The format of command should be "git commit -m '{type}: {title}' -m '- {detail1}' -m '- {detail2}'", the count of -m tag depends on the details count.
-				6. The details can be ignore if the commit content is simple and not important.
+				6. The details can be ignored if the diff content is simple .
 				7. Make sure the tile and details are concise.
 				8. Your should also notice the context of the commit contnet to make more precision description.
 				9. Your entire response will be passed directly into shell to execute, so make sure it's executable.
@@ -80,8 +80,10 @@ var rootCmd = &cobra.Command{
 			llm = sllms.NewOllama(model)
 		case "lingyi":
 			llm = sllms.NewLingyi(model)
+		case "github":
+			llm = sllms.NewGithub(model)
 		default:
-			log.Fatal("invalid platform, only suppport ollama and lingyi but found: ", platform)
+			log.Fatal("invalid platform, only suppport github, ollama and lingyi but found: ", platform)
 		}
 		command, err := llm.GenerateContent(context.Background(), prompt, diff, streamingFn)
 		if err != nil {
