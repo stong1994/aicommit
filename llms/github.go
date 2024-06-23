@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"os"
+	"strconv"
 
 	copilot "github.com/stong1994/github-copilot-api"
 )
@@ -16,9 +17,11 @@ func NewGithub(model string) *Github {
 	if model == "" {
 		model = "gpt-4"
 	}
+
 	llm, err := copilot.NewCopilot(
-		copilot.WithModel(model),
-		copilot.WithGithubToken(os.Getenv("GITHUB_OAUTH_TOKEN")),
+		copilot.WithCompletionModel(model),
+		copilot.WithTemperature(getTemperature()),
+		copilot.WithGithubOAuthToken(os.Getenv("GITHUB_OAUTH_TOKEN")),
 	)
 	if err != nil {
 		log.Fatal("error creating github copilot: ", err)
@@ -47,7 +50,6 @@ func (l *Github) GenerateContent(
 				},
 			},
 			StreamingFunc: streamingFn,
-			Temperature:   0.1,
 		},
 	)
 	if err != nil {
@@ -55,4 +57,16 @@ func (l *Github) GenerateContent(
 	}
 
 	return response.Choices[0].Message.Content, nil
+}
+
+func getTemperature() float64 {
+	temperatureStr := os.Getenv("AICOMMIT_TEMPERATURE")
+	if temperatureStr == "" {
+		return 1.0
+	}
+	temperature, _ := strconv.ParseFloat(temperatureStr, 64)
+	if temperature == 0 {
+		return 1.0
+	}
+	return temperature
 }

@@ -35,7 +35,7 @@ const prompt = `You are an AI programming assistant.
 				6. The details can be ignored if the diff content is simple .
 				7. Make sure the tile and details are concise.
 				8. Your should also notice the context of the commit contnet to make more precision description.
-				9. Your entire response will be passed directly into shell to execute, so make sure it's executable.
+				9. Your entire response will be passed directly into shell to execute, so make sure it's executable!
 			`
 
 var (
